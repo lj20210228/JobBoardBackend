@@ -22,6 +22,7 @@ class JobFactory extends Factory
             'description' => $this->faker->text,
             'company_id' => Company::factory(),
             'deadline' => $this->faker->dateTimeBetween('now','+2 months'),
+            'salary' => $this->faker->numberBetween(800,3000),
         ];
     }
 }
