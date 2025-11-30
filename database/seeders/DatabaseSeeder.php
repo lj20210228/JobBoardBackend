@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Application;
+use App\Models\Comment;
 use App\Models\Company;
 use App\Models\Job;
 use App\Models\User;
@@ -24,5 +25,6 @@ class DatabaseSeeder extends Seeder
         Application::factory()->count(300)->create();
         User::factory()->count(30)->create(['role' => 'student']);
         User::factory()->count(30)->create(['role' => 'alumni']);
+        Comment::factory()->count(30)->create();
     }
 }

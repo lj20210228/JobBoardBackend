@@ -15,4 +15,8 @@ class Company extends Model
     public function jobs(){
         return $this->hasMany(Job::class);
     }
+    public function comments(){
+        return $this->hasMany(Comment::class);
+    }
+
 }
