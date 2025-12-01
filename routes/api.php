@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\JobController;
@@ -13,6 +14,8 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 Route::post('/register', [AuthController::class, 'register'] );
 Route::post('/login', [AuthController::class, 'login'] );
+Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLink']);
+Route::post('/reset-password', [PasswordResetController::class, 'resetPassword']);
 
 Route::middleware('auth:sanctum,role:admin')->group(function () {
     Route::delete("/user/delete/{user}", [UserController::class, 'destroy'] );
