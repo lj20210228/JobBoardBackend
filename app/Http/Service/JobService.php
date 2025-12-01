@@ -15,6 +15,7 @@ class JobService
             'company_id' => $request['company_id'],
             'deadline' => $request['deadline'],
             'salary' => $request['salary'],
+            'category_id' => $request['category_id'],
         ]);
     }
     public function updateJob(Job $job,array $data):Job{

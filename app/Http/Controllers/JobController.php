@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\JobResource;
+use App\Http\Service\CategoryService;
 use App\Http\Service\CompanyService;
 use App\Http\Service\JobService;
 use App\Models\Job;
@@ -14,9 +15,11 @@ class JobController extends Controller
 
     protected JobService $jobService;
     protected CompanyService $companyService;
-    public function __construct(JobService $jobService, CompanyService $companyService){
+    protected CategoryService $categoryService;
+    public function __construct(JobService $jobService, CompanyService $companyService,CategoryService $categoryService){
         $this->jobService = $jobService;
         $this->companyService = $companyService;
+        $this->categoryService = $categoryService;
     }
     public function index()
     {
@@ -41,6 +44,7 @@ class JobController extends Controller
             'description'=>'required',
             'company_id'=>'required',
             'deadline'=>'required|date',
+            'category_id'=>'required',
 
         ]);
         if($validator->fails()){
@@ -50,6 +54,11 @@ class JobController extends Controller
         if ($company ===null){
             return response()->json(['message'=>"Company doesn't exist"], 400);
         }
+        $category=$this->categoryService->getCategoryById($request->get('category_id'));
+        if ($category ===null){
+            return response()->json(['message'=>"Category doesn't exist"], 400);
+        }
+
 
 
         $job=$this->jobService->addJob($request->toArray());

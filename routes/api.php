@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\PasswordResetController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\JobController;
@@ -20,6 +21,10 @@ Route::post('/reset-password', [PasswordResetController::class, 'resetPassword']
 Route::middleware('auth:sanctum,role:admin')->group(function () {
     Route::delete("/user/delete/{user}", [UserController::class, 'destroy'] );
     Route::delete("/company/delete/{company}", [CompanyController::class, 'destroy'] );
+    Route::post('/category', [CategoryController::class, 'store'] );
+    Route::put('/category/update', [CategoryController::class, 'update'] );
+    Route::delete('/category/{category}', [CategoryController::class, 'destroy'] );
+
 
 });
 Route::middleware('auth:sanctum,role:company')->group(function () {
@@ -61,6 +66,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/jobs/company/{company_id}',[JobController::class,'getJobsForCompany']);
     Route::get("/comment/{companyId}",[\App\Http\Controllers\CommentController::class,'getCommentsForCompany']);
     Route::get("/comments/user",[CommentController::class,'getCommentsForUser']);
+    Route::get("/category/search",[CategoryController::class,'searchCategory']);
+    Route::get("/category/{category}",[CategoryController::class,'show']);
 
 
 });
