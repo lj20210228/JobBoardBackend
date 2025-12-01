@@ -24,9 +24,16 @@ Route::middleware('auth:sanctum,role:company')->group(function () {
     Route::post("job/add",[JobController::class,'store']);
     Route::put("job/update/{job}",[JobController::class,'update']);
     Route::delete("job/delete/{job}",[JobController::class,'destroy']);
+    Route::get("/application/jobs/{job}",[\App\Http\Controllers\ApplicationController::class,'getApplicationsForJob']);
+
 
 });
-Route::middleware('auth:sanctum,role:student,alumni')->group(function () {
+Route::middleware('auth:sanctum,role:student')->group(function () {
+    Route::post("/application/add",[\App\Http\Controllers\ApplicationController::class,'store']);
+    Route::put("/application/update/{application}",[\App\Http\Controllers\ApplicationController::class,'update']);
+    Route::delete("/application/delete/{application}",[\App\Http\Controllers\ApplicationController::class,'destroy']);
+    Route::get("/application/user",[\App\Http\Controllers\ApplicationController::class,'getApplicationsForUser']);
+
 
 });
 
@@ -38,4 +45,6 @@ Route::middleware('auth:sanctum,role:student,alumni,admin')->group(function () {
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/jobs/company/{company_id}',[JobController::class,'getJobsForCompany']);
 });
+
+
 

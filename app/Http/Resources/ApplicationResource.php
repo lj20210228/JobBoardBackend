@@ -17,8 +17,8 @@ class ApplicationResource extends JsonResource
     {
         return [
             'id'=>$this->id,
-            'user'=>new UserResource($this->user_id)
-            ,'job'=>new JobResource($this->job_id),
+            'user'=>new UserResource($this->user),
+            'job'=>new JobResource($this->job),
             'status'=>$this->status,
             'resume_url' => $this->resume_url,
             'linkedin_url' => $this->linkedinUrl,

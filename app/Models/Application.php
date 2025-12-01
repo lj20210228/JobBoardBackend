@@ -10,7 +10,7 @@ class Application extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id', 'job_id', 'status', 'linkedin_url', 'resume_url',
+        'user_id', 'job_id', 'status', 'linkedinUrl', 'resume_url',
     ];
 
     public function user()
