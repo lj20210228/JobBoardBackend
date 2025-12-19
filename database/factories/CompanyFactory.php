@@ -22,7 +22,7 @@ class CompanyFactory extends Factory
             'address'=>$this->faker->address,
             'phone'=>$this->faker->phoneNumber,
             'description'=>$this->faker->catchPhrase,
-            'user_id' => User::factory()->create(['role'=>'company'])->id,
+            'user_id' =>null
         ];
     }
 }

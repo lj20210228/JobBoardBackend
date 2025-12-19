@@ -21,10 +21,10 @@ class JobFactory extends Factory
         return [
             'title' => $this->faker->jobTitle,
             'description' => $this->faker->text,
-            'company_id' => Company::factory(),
+            'company_id' => Company::inRandomOrder()->first()->id,
             'deadline' => $this->faker->dateTimeBetween('now','+2 months'),
             'salary' => $this->faker->numberBetween(800,3000),
-            'category_id' => Category::factory(),
+            'category_id' => Category::inRandomOrder()->first()->id,
         ];
     }
 }

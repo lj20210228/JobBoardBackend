@@ -21,12 +21,23 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         Category::factory()->count(10)->create();
+
+        $companyUsers = User::factory()
+            ->count(30)
+            ->create(['role' => 'company']);
+
+        $companies = $companyUsers->map(function ($user) {
+            return Company::factory()->create([
+                'user_id' => $user->id,
+            ]);
+        });
+
         User::factory()->count(5)->create(['role' => 'admin']);
-        Company::factory()->count(30)->create();
-        Job::factory()->count(80)->create();
-        Application::factory()->count(300)->create();
         User::factory()->count(30)->create(['role' => 'student']);
         User::factory()->count(30)->create(['role' => 'alumni']);
+
+        Job::factory()->count(80)->create();
+        Application::factory()->count(300)->create();
         Comment::factory()->count(30)->create();
     }
 }

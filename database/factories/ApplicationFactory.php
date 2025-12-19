@@ -19,11 +19,11 @@ class ApplicationFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id'=>User::factory()->create(['role'=>'student'])->id,
-            'job_id'=>Job::factory(),
-            'status'=>$this->faker->randomElement(['pending','accepted','rejected']),
-            'linkedinUrl'=>$this->faker->url,
-            'resume_url'=>$this->faker->url,
+            'user_id' => User::where('role','student')->inRandomOrder()->first()->id,
+            'job_id' => Job::inRandomOrder()->first()->id,
+            'status' => $this->faker->randomElement(['pending','accepted','rejected']),
+            'linkedinUrl' => $this->faker->url,
+            'resume_url' => $this->faker->url,
         ];
     }
 }
