@@ -63,6 +63,7 @@ Route::middleware('auth:sanctum,role:student,alumni')->group(function () {
 });
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get("/me",[UserController::class,'me']);
     Route::get('/jobs/company/{company_id}',[JobController::class,'getJobsForCompany']);
     Route::get("/comment/{companyId}",[\App\Http\Controllers\CommentController::class,'getCommentsForCompany']);
     Route::get("/comments/user",[CommentController::class,'getCommentsForUser']);

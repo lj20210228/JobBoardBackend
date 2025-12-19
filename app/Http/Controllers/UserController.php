@@ -83,5 +83,9 @@ class UserController extends Controller
         $users=$this->userService->getUsersByRole($role,10);
         return response()->json(['users'=>UserResource::collection($users),"message"=>"Users for role $role founded successfully "],200);
     }
+    public function me(Request $request){
+        $user=$this->userService->getUserById($request->user()->id);
+        return response()->json(['user'=>new UserResource($user)],200);
+    }
 
 }
