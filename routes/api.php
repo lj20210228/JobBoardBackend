@@ -52,7 +52,8 @@ Route::middleware('auth:sanctum,role:student')->group(function () {
 
 Route::middleware('auth:sanctum,role:student,alumni,admin')->group(function () {
     Route::get("/companies/name",[CompanyController::class,'searchCompany']);
-    Route::get("/jobs/name",[JobController::class,'searchJobs']);
+    Route::get('/jobs/search', [JobController::class, 'searchJobs']);
+    Route::get("/jobs",[JobController::class, 'index']);
     Route::get("/comments/company/{companyId}",[CommentController::class,'getCommentsForCompany']);
     Route::delete("/comments/{comment}",[CommentController::class,'destroy']);
 });

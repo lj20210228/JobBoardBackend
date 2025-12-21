@@ -28,9 +28,28 @@ class JobService
     public function getJob($jobId):?Job{
         return Job::where("id",$jobId)->first();
     }
-    public function searchJobs($name):LengthAwarePaginator{
-        return Job::where("title",'like',"%$name%")
-            ->orderBy("title")
+    public function searchJobs(array $filters): LengthAwarePaginator
+    {
+        $query = Job::query();
+
+        if (!empty($filters['name'])) {
+            $query->where('title', 'like', '%' . $filters['name'] . '%');
+        }
+
+        if (!empty($filters['category_id'])) {
+            $query->where('category_id', $filters['category_id']);
+        }
+
+        if (!empty($filters['salary_min'])) {
+            $query->where('salary', '>=', $filters['salary_min']);
+        }
+
+        if (!empty($filters['salary_max'])) {
+            $query->where('salary', '<=', $filters['salary_max']);
+        }
+
+        return $query
+            ->orderBy('created_at', 'desc')
             ->paginate(10);
     }
     public function getJobsForCompany($companyId):Collection

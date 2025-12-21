@@ -23,6 +23,8 @@ class JobController extends Controller
     }
     public function index()
     {
+        $jobs=Job::all();
+        return response()->json(["jobs"=>JobResource::collection($jobs)],200);
 
     }
 
@@ -97,9 +99,22 @@ class JobController extends Controller
     }
     public function searchJobs(Request $request)
     {
-        $name=$request->input('name','');
-        $jobs=$this->jobService->searchJobs($name);
-        return response()->json(['jobs'=>JobResource::collection($jobs)]);
+        $filters = $request->only([
+            'name',
+            'category_id',
+            'salary_min',
+            'salary_max'
+        ]);
+
+        $jobs = $this->jobService->searchJobs($filters);
+
+        return response()->json([
+            'jobs' => JobResource::collection($jobs),
+            'meta' => [
+                'current_page' => $jobs->currentPage(),
+                'last_page' => $jobs->lastPage()
+            ]
+        ]);
     }
     public function getJobsForCompany($company_id){
         $jobs=$this->jobService->getJobsForCompany($company_id);
