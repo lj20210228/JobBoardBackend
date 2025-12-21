@@ -79,8 +79,12 @@ class CompanyController extends Controller
     }
 
     public function searchCompany(Request $request){
-        $name=$request->input('name','');
-        $companies=$this->companyService->getCompaniesByName($name);
-        return response()->json(['companies'=>CompanyResource::collection($companies)]);
+        $name = $request->input('name');
+
+        $companies = $this->companyService->getCompaniesByName($name);
+
+        return response()->json([
+            'companies' => CompanyResource::collection($companies)
+        ]);
     }
 }

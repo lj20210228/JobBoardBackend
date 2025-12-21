@@ -29,10 +29,12 @@ class CompanyService
     public function getCompanyById($id): ?Company{
         return Company::where("id",$id)->first();
     }
-    public function getCompaniesByName($name): LengthAwarePaginator{
-        return Company::where("name",'like',"%$name%")->
-            orderBy("name")
-            ->paginate(5);
+    public function getCompaniesByName(?string $name): Collection{
+        return Company::when($name, function ($query) use ($name) {
+            $query->where('name', 'like', '%' . $name . '%');
+        })
+            ->orderBy('name')
+            ->get();
     }
 
 

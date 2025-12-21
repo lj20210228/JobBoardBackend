@@ -20,6 +20,9 @@ class CompanyResource extends JsonResource
             'name'=>$this->name,
             'description'=>$this->description,
             'user'=>UserResource::make($this->whenLoaded('user')),
+            'average_rating' => round($this->comments->avg('rating'), 1),
+            'comments_count' => $this->comments->count(),
+
             'address'=>$this->address,
             'phone'=>$this->phone
         ];
