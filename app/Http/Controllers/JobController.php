@@ -112,7 +112,9 @@ class JobController extends Controller
             'jobs' => JobResource::collection($jobs),
             'meta' => [
                 'current_page' => $jobs->currentPage(),
-                'last_page' => $jobs->lastPage()
+                'last_page' => $jobs->lastPage(),
+                'per_page' => $jobs->perPage(),
+                'total' => $jobs->total(),
             ]
         ]);
     }

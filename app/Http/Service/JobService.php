@@ -50,8 +50,9 @@ class JobService
 
         return $query
             ->orderBy('created_at', 'desc')
-            ->paginate(10);
+            ->paginate(10); // 10 po strani
     }
+
     public function getJobsForCompany($companyId):Collection
     {
         return Job::where("company_id", $companyId)->get();
