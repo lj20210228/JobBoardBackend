@@ -39,23 +39,35 @@ class ApplicationController extends Controller
      */
     public function store(Request $request)
     {
-        $validator=Validator::make($request->all(),[
-            'job_id' => 'required',
-            'resume_url' => 'required'
+        $validator = Validator::make($request->all(), [
+            'job_id' => 'required|exists:jobs,id',
+            'cv' => 'required|file|mimes:pdf,doc,docx|max:2048',
+            'linkedinUrl' => 'nullable|url'
         ]);
-        if($validator->fails()){
-            return response()->json($validator->errors()->toJson(), 400);
-        }
-        $job=$this->jobService->getJob($request->get('job_id'));
-        if ($job===null){
-            return response()->json(["message"=>"Job not found"], 404);
-        }
-        $userId=$request->user()->id;
-        $data = $request->only(['job_id', 'resume_url', 'linkedin_url', 'status']);
-        $data['user_id'] = $userId;
-        $application=$this->applicationService->addAplications($data);
-        return response()->json(["application"=>new ApplicationResource($application),"message"=>"Application added successfully"], 201);
 
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+
+        $userId = $request->user()->id;
+
+        if ($request->hasFile('cv')) {
+            $path = $request->file('cv')->store('cvs', 'public');
+            $resumeUrl = asset('storage/' . $path);
+        }
+
+        $application = $this->applicationService->addAplications([
+            'job_id' => $request->job_id,
+            'user_id' => $userId,
+            'resume_url' => $resumeUrl,
+            'linkedinUrl' => $request->linkedinUrl,
+            'status' => 'pending'
+        ]);
+
+        return response()->json([
+            "application" => new ApplicationResource($application),
+            "message" => "Application added successfully"
+        ], 201);
     }
 
     /**
