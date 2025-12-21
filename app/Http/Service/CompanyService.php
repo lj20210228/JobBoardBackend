@@ -9,13 +9,21 @@ use Illuminate\Support\Collection;
 
 class CompanyService
 {
-    public function addCompany(Request $request,$user_id){
+    public function __construct(
+        private GeocodingService $geocodingService
+    ) {}
+    public function addCompany(Request $request, $user_id)
+    {
+        $coords = $this->geocodingService->geocode($request['address']);
+
         return Company::create([
-            'name'=>$request['company_name'],
-            'description'=>$request['description'],
-            'address'=>$request['address'],
-            'phone'=>$request['phone'],
-            'user_id'=>$user_id,
+            'name'        => $request['company_name'],
+            'description' => $request['description'],
+            'address'     => $request['address'],
+            'phone'       => $request['phone'],
+            'user_id'     => $user_id,
+            'latitude'    => $coords['lat'] ?? null,
+            'longitude'   => $coords['lon'] ?? null,
         ]);
     }
     public function updateCompany(array $data,Company $company):?Company{

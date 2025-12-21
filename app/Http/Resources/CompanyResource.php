@@ -24,6 +24,8 @@ class CompanyResource extends JsonResource
             'comments_count' => $this->comments->count(),
 
             'address'=>$this->address,
+            'latitude'=>$this->latitude,
+            'longitude'=>$this->longitude,
             'phone'=>$this->phone
         ];
     }

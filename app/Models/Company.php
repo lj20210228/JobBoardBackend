@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Company extends Model
 {
     use HasFactory;
-    protected $fillable = ['name','description','user_id','address','phone'];
+    protected $fillable = ['name','description','user_id','address','phone', 'latitude',
+        'longitude'];
     public function user(){
         return $this->belongsTo(User::class);
     }
