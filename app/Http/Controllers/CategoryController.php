@@ -7,6 +7,7 @@ use App\Http\Service\CategoryService;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use function Pest\Laravel\json;
 
 class CategoryController extends Controller
 {
@@ -19,7 +20,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $categories = $this->categoryService->getCategories();
+        return response()->json(['categories'=>CategoryResource::collection($categories)],200);
     }
 
     /**

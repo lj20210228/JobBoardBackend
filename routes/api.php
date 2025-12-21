@@ -69,6 +69,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get("/comments/user",[CommentController::class,'getCommentsForUser']);
     Route::get("/category/search",[CategoryController::class,'searchCategory']);
     Route::get("/category/{category}",[CategoryController::class,'show']);
+    Route::get("/category",[CategoryController::class,'index']);
 
 
 });

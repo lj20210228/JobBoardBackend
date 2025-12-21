@@ -4,6 +4,7 @@ namespace App\Http\Service;
 
 use App\Models\Category;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 
 class CategoryService
 {
@@ -19,8 +20,8 @@ class CategoryService
     public function delete(Category $category):bool{
         return $category->delete();
     }
-    public function getCategories():LengthAwarePaginator{
-        return Category::orderBy('id', 'desc')->paginate(10);
+    public function getCategories(): Collection{
+        return Category::all();
     }
     public function getCategoryById($id):?Category{
         return Category::where("id",$id)->first();
