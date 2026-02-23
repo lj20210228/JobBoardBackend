@@ -1,23 +1,30 @@
 version: '3.8'
+
 services:
-  app:
-    build: .
+  # Laravel Backend
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: backend
     ports:
       - "8000:80"
     environment:
-      - APP_ENV=local
-      - APP_DEBUG=true
-      - APP_KEY=base64:replace_with_your_key
-      - DB_HOST=db
-      - DB_PORT=3306
-      - DB_DATABASE=laravel
-      - DB_USERNAME=root
-      - DB_PASSWORD=root
+      APP_ENV: local
+      APP_DEBUG: 1
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: job_board_backend
+      DB_USERNAME: root
+      DB_PASSWORD: root
     depends_on:
       - db
 
+  # MySQL Database
   db:
     image: mysql:8
+    container_name: mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: job_board_backend
@@ -25,6 +32,19 @@ services:
       - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
+
+  # PhpMyAdmin (opciono)
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmin
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: root
+    depends_on:
+      - db
 
 volumes:
   db_data:
