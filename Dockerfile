@@ -1,38 +1,36 @@
-# Koristimo PHP + Apache
 FROM php:8.2-apache
 
-# Instaliraj PHP ekstenzije i git/unzip
+# Instaliraj sistemske zavisnosti i PHP ekstenzije (dodat bcmath)
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
     libzip-dev \
     libonig-dev \
     curl \
-    && docker-php-ext-install pdo pdo_mysql zip mbstring
+    && docker-php-ext-install pdo pdo_mysql zip mbstring bcmath
 
 # Instaliraj Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Kopiraj Laravel projekat
+# Kopiraj projekat
 COPY . /var/www/html
 
 WORKDIR /var/www/html
 
-# Instaliraj PHP dependencies
+# Instaliraj PHP dependencies bez dev alata
 RUN composer install --no-dev --optimize-autoloader
 
-# Postavi prava za storage i cache
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 777 /var/www/html/storage /var/www/html/bootstrap/cache
+# Postavi DocumentRoot na /public I OMOGUĆI .htaccess (AllowOverride All)
+RUN sed -i 's#/var/www/html#/var/www/html/public#g' /etc/apache2/sites-available/000-default.conf \
+    && sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
 
 # Omogući Apache mod_rewrite
 RUN a2enmod rewrite
 
-# Preusmeri DocumentRoot na Laravel public folder
-RUN sed -i 's#/var/www/html#/var/www/html/public#g' /etc/apache2/sites-available/000-default.conf
+# Postavi prava za storage i cache (775 je sigurnije od 777)
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Otvori port 80
 EXPOSE 80
 
-# Start Apache
 CMD ["apache2-foreground"]
