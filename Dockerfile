@@ -18,12 +18,12 @@ COPY . /var/www/html
 
 WORKDIR /var/www/html
 
-# Instaliraj PHP zavisnosti
+# Instaliraj PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
 
 # Postavi prava
 RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html/storage /var/www/html/bootstrap/cache
+    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
 # Omogući Apache mod_rewrite
 RUN a2enmod rewrite

@@ -12,7 +12,6 @@ services:
     environment:
       APP_ENV: local
       APP_KEY: base64:Y+sFrj/qBbtZ8UjbYqCgJ2lN5oxtobcdTdL5KRvNsPo=
-
       APP_DEBUG: 1
       DB_CONNECTION: mysql
       DB_HOST: db
@@ -30,7 +29,6 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: job_board_backend
-
     ports:
       - "3306:3306"
     volumes:
