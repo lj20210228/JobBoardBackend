@@ -1,18 +1,17 @@
 version: '3.8'
 
 services:
-  # Laravel Backend
   backend:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.backend
     container_name: backend
     ports:
       - "8000:80"
     environment:
       APP_ENV: local
-      APP_KEY: base64:Y+sFrj/qBbtZ8UjbYqCgJ2lN5oxtobcdTdL5KRvNsPo=
       APP_DEBUG: 1
+      APP_KEY: base64:Y+sFrj/qBbtZ8UjbYqCgJ2lN5oxtobcdTdL5KRvNsPo=
       DB_CONNECTION: mysql
       DB_HOST: db
       DB_PORT: 3306
@@ -22,7 +21,6 @@ services:
     depends_on:
       - db
 
-  # MySQL Database
   db:
     image: mysql:8
     container_name: mysql
@@ -30,11 +28,10 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: job_board_backend
     ports:
-      - "3306:3306"
+      - "3307:3306" # promenjen host port da ne blokira lokalni MySQL
     volumes:
       - db_data:/var/lib/mysql
 
-  # PhpMyAdmin (opciono)
   phpmyadmin:
     image: phpmyadmin
     container_name: phpmyadmin
